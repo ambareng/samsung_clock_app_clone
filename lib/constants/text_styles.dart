@@ -22,3 +22,33 @@ const TextStyle selectedBottomNavBarText_1 = TextStyle(
   fontWeight: FontWeight.w600,
   color: Colors.black,
 );
+
+const TextStyle timePicker = TextStyle(
+  fontSize: xLarge,
+);
+
+const TextStyle timePickerSmall = TextStyle(
+  fontSize: large,
+);
+
+const TextStyle datePickerSmall = TextStyle(
+  fontSize: small,
+);
+
+const TextStyle mediumText = TextStyle(
+  fontSize: small,
+);
+
+const tappableSmallText = TextStyle(
+  fontSize: small,
+  color: Colors.blueAccent,
+);
+
+const toggleSettingLabelText = TextStyle(
+  fontSize: 17,
+);
+
+const settingBottomNavBarText = TextStyle(
+  fontSize: 17,
+  fontWeight: FontWeight.bold,
+);
