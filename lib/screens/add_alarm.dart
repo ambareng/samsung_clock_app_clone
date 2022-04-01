@@ -70,10 +70,15 @@ class SettingBottomNavBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: Text(
-        itemLabel,
-        style: GoogleFonts.nanumGothic(
-          textStyle: settingBottomNavBarText,
+      child: InkWell(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Text(
+          itemLabel,
+          style: GoogleFonts.nanumGothic(
+            textStyle: settingBottomNavBarText,
+          ),
         ),
       ),
     );

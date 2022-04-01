@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:samsung_clock_app_clone/screens/add_alarm.dart';
+import 'package:samsung_clock_app_clone/screens/alarm_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -17,9 +18,13 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AddAlarm(),
+      initialRoute: '/alarm',
+      routes: {
+        '/alarm': (context) => const AlarmScreen(),
+        '/add_alarm': (context) => const AddAlarm(),
+      },
     );
   }
 }

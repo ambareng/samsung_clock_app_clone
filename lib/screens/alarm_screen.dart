@@ -27,10 +27,12 @@ class AlarmScreen extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
+              children: [
                 Padding(
                   padding: EdgeInsets.only(right: 10.0),
-                  child: Icon(Icons.add, size: 30),
+                  child: IconButton(onPressed: () {
+                    Navigator.pushNamed(context, '/add_alarm');
+                  }, icon: Icon(Icons.add, size: 30),)
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 15.0),
