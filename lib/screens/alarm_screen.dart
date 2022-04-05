@@ -118,7 +118,7 @@ class AlarmWidget extends StatelessWidget {
                         Text(formattedAlarmDay, style: GoogleFonts.nanumGothic(
                           textStyle: alarmDateDisabled
                         ),),
-                        AlarmSwitch(isOn: alarm.isEnabled,),
+                        AlarmSwitch(isOn: alarm.isEnabled, alarm: alarm,),
                       ],
                     ),
                   ),
@@ -140,8 +140,10 @@ class AlarmSwitch extends StatefulWidget {
   AlarmSwitch({
     Key? key,
     this.isOn = false,
+    required this.alarm,
   }) : super(key: key);
   bool? isOn;
+  final Alarm alarm;
 
   @override
   State<AlarmSwitch> createState() => _AlarmSwitchState();
@@ -154,6 +156,14 @@ class _AlarmSwitchState extends State<AlarmSwitch> {
       setState(() {
         widget.isOn = !widget.isOn!;
       });
+
+      Alarm updatedAlarm = Alarm(
+        id: widget.alarm.id,
+        isEnabled: widget.isOn!, 
+        alarmTime: widget.alarm.alarmTime
+      );
+
+      AlarmsDatabase.instance.update(updatedAlarm);
     },);
   }
 }
