@@ -52,3 +52,19 @@ const settingBottomNavBarText = TextStyle(
   fontSize: 17,
   fontWeight: FontWeight.bold,
 );
+
+const TextStyle alarmTimeDisabled = TextStyle(
+  fontSize: 35.0,
+  color: Colors.grey
+);
+
+const TextStyle alarmMeridianDisabled = TextStyle(
+  fontSize: small,
+  color: Colors.grey,
+);
+
+const TextStyle alarmDateDisabled = TextStyle(
+  fontSize: 12,
+  color: Colors.grey,
+  letterSpacing: 0.0
+);

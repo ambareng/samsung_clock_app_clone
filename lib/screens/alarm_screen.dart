@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:samsung_clock_app_clone/constants/text_styles.dart';
 import 'package:samsung_clock_app_clone/db/alarms_database.dart';
 import 'package:samsung_clock_app_clone/models/alarm.dart';
-import 'package:sqflite/sqflite.dart';
 
 class AlarmScreen extends StatelessWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -45,48 +45,7 @@ class AlarmScreen extends StatelessWidget {
                 )
               ],
             ),
-            FutureBuilder(
-              future: AlarmsDatabase.instance.readAllAlarms(),
-              builder: (context, AsyncSnapshot<List<Alarm?>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  final List<Alarm?> alarmsList = snapshot.data!;
-                  if (alarmsList.isNotEmpty) {
-                    // for (var alarm in alarmsList) { 
-                    //   print(alarm?.id);
-                    //   print(alarm?.isEnabled);
-                    //   print(alarm?.alarmTime);
-                    // }
-                    // print(alarmsList[0]?.isEnabled);
-                    // print(alarmsList[0]?.id);
-                    return Column(
-                      children: alarmsList.map((alarm) {
-                        return Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.white),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35.0),
-                            child: Row(
-                              children: [
-                                Text('6:00', style: GoogleFonts.nanumGothic(
-                                  textStyle: header_1
-                                ),),
-                                Text('AM'),
-                                Spacer(),
-                                Text('Mon, Apr 4'),
-                                Switch(value: false, onChanged: null,),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList()
-                    );
-                  } else {
-                    return NoAlarms();
-                  }
-                } else {
-                  return NoAlarms();
-                }
-              }
-            )
+            AlarmWidget()
           ],
         ),
       ),
@@ -112,6 +71,90 @@ class AlarmScreen extends StatelessWidget {
         ),
       )
     );
+  }
+}
+
+class AlarmWidget extends StatelessWidget {
+  const AlarmWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: AlarmsDatabase.instance.readAllAlarms(),
+      builder: (context, AsyncSnapshot<List<Alarm?>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final List<Alarm> alarmsList = snapshot.data! as List<Alarm>;
+          if (alarmsList.isNotEmpty) {
+            return Column(
+              children: alarmsList.map((alarm) {
+
+                final DateFormat timeFormatter = DateFormat('h:mm ');
+                final DateFormat meridianFormatter = DateFormat('a');
+                final DateFormat dayFormatter = DateFormat('E,MMM d');
+
+                final String formattedAlarmTime = timeFormatter.format(alarm.alarmTime);
+                final String formattedAlarmMeridian = meridianFormatter.format(alarm.alarmTime);
+                final String formattedAlarmDay = dayFormatter.format(alarm.alarmTime);
+
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
+                    child: Row(
+                      children: [
+                        Text(formattedAlarmTime, style: GoogleFonts.nanumGothic(
+                          textStyle: alarmTimeDisabled
+                        ),),
+                        Container(
+                          margin: EdgeInsets.only(top: 15.0),
+                          child: Text(formattedAlarmMeridian, style: GoogleFonts.nanumGothic(
+                            textStyle: alarmMeridianDisabled
+                          ),),
+                        ),
+                        Spacer(),
+                        Text(formattedAlarmDay, style: GoogleFonts.nanumGothic(
+                          textStyle: alarmDateDisabled
+                        ),),
+                        AlarmSwitch(isOn: alarm.isEnabled,),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList()
+            );
+          } else {
+            return NoAlarms();
+          }
+        } else {
+          return NoAlarms();
+        }
+      }
+    );
+  }
+}
+
+class AlarmSwitch extends StatefulWidget {
+  AlarmSwitch({
+    Key? key,
+    this.isOn = false,
+  }) : super(key: key);
+  bool? isOn;
+
+  @override
+  State<AlarmSwitch> createState() => _AlarmSwitchState();
+}
+
+class _AlarmSwitchState extends State<AlarmSwitch> {
+  @override
+  Widget build(BuildContext context) {
+    return Switch(value: widget.isOn!, onChanged: (value) {
+      setState(() {
+        widget.isOn = !widget.isOn!;
+      });
+    },);
   }
 }
 
