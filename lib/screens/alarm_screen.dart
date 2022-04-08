@@ -1,11 +1,20 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, avoid_print
 
+import 'dart:isolate';
+
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:samsung_clock_app_clone/constants/text_styles.dart';
 import 'package:samsung_clock_app_clone/db/alarms_database.dart';
 import 'package:samsung_clock_app_clone/models/alarm.dart';
+
+void printHello() {
+  final DateTime now = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
+  print("[$now] Hello, world! isolate=$isolateId function='$printHello'");
+}
 
 class AlarmScreen extends StatelessWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -35,13 +44,21 @@ class AlarmScreen extends StatelessWidget {
                   padding: EdgeInsets.only(right: 10.0),
                   child: IconButton(onPressed: () {
                     Navigator.pushNamed(context, '/add_alarm');
-                    // Alarm sampleAlarm = Alarm(isEnabled: false, alarmTime: DateTime.now());
-                    // AlarmsDatabase.instance.create(sampleAlarm);
                   }, icon: Icon(Icons.add, size: 30),)
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 15.0),
-                  child: Icon(Icons.more_vert, size: 30),
+                  child: IconButton(onPressed: () async {
+                    // await AndroidAlarmManager.initialize();
+                    const int helloAlarmID = 0;
+                    await AndroidAlarmManager.oneShotAt(
+                      DateTime.now().add(const Duration(seconds: 5)), 
+                      helloAlarmID, 
+                      printHello,
+                      alarmClock: true, 
+                      allowWhileIdle: true,
+                    );
+                  }, icon: Icon(Icons.more_vert, size: 30),)
                 )
               ],
             ),

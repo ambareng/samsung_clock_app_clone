@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:samsung_clock_app_clone/constants/colors.dart';
@@ -8,9 +9,22 @@ import '../constants/text_styles.dart';
 import '../widgets/alarm_setting_input_fields.dart';
 import '../widgets/timer_picker.dart';
 
-class AddAlarm extends StatelessWidget {
-  const AddAlarm({Key? key}) : super(key: key);
+class AddAlarm extends StatefulWidget {
+  const AddAlarm({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  State<AddAlarm> createState() => _AddAlarmState();
+}
+
+class _AddAlarmState extends State<AddAlarm> {
+  @override
+  void initState() {
+    super.initState();
+    AndroidAlarmManager.initialize();
+  }
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,10 +92,10 @@ class SettingBottomNavBarItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           if (toSave) {
             DateTime now = DateTime.now();
-            DateTime alarmTime = now.add(const Duration(hours: 1));
+            DateTime alarmTime = now.add(const Duration(minutes: 2));
 
             Alarm alarm = Alarm(isEnabled: true, alarmTime: alarmTime);
 
