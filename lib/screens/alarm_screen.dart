@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, avoid_print
 
-import 'dart:isolate';
-
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -10,14 +9,58 @@ import 'package:samsung_clock_app_clone/constants/text_styles.dart';
 import 'package:samsung_clock_app_clone/db/alarms_database.dart';
 import 'package:samsung_clock_app_clone/models/alarm.dart';
 
-void printHello() {
-  final DateTime now = DateTime.now();
-  final int isolateId = Isolate.current.hashCode;
-  print("[$now] Hello, world! isolate=$isolateId function='$printHello'");
+void createAlarmNotificatication() async {
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: 0, 
+      channelKey: 'basic_channel',
+      title: 'Sample Title',
+      body: 'Sample Body',
+      notificationLayout: NotificationLayout.Default,
+      locked: true,
+      fullScreenIntent: true,
+      criticalAlert: true,
+      autoDismissible: false,
+      displayOnForeground: true,
+      displayOnBackground: false,
+      category: NotificationCategory.Call,
+      wakeUpScreen: true,
+    ),
+    actionButtons: [
+      NotificationActionButton(
+        key: 'DISMISS_ALARM', 
+        label: 'Dismiss',
+        showInCompactView: true
+      ),
+      // NotificationActionButton(
+      //   key: 'SNOOZE', 
+      //   label: 'Snooze',
+      //   showInCompactView: true,
+      // ),
+    ],
+  );
 }
 
-class AlarmScreen extends StatelessWidget {
+class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AlarmScreen> createState() => _AlarmScreenState();
+}
+
+class _AlarmScreenState extends State<AlarmScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then(
+      (isAllowed) {
+        if (!isAllowed) {
+          AwesomeNotifications().requestPermissionToSendNotifications();
+        }
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +92,11 @@ class AlarmScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 15.0),
                   child: IconButton(onPressed: () async {
-                    // await AndroidAlarmManager.initialize();
-                    const int helloAlarmID = 0;
+                    const int alarmId = 0;
                     await AndroidAlarmManager.oneShotAt(
-                      DateTime.now().add(const Duration(seconds: 5)), 
-                      helloAlarmID, 
-                      printHello,
+                      DateTime.now().add(const Duration(seconds: 7)), 
+                      alarmId,
+                      createAlarmNotificatication,
                       alarmClock: true, 
                       allowWhileIdle: true,
                     );
