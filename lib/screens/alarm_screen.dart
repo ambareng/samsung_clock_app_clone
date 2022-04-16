@@ -5,6 +5,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:samsung_clock_app_clone/constants/text_styles.dart';
 import 'package:samsung_clock_app_clone/db/alarms_database.dart';
 import 'package:samsung_clock_app_clone/models/alarm.dart';
@@ -13,7 +14,7 @@ void createAlarmNotificatication() async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: 0, 
-      channelKey: 'basic_channel',
+      channelKey: 'test_channel',
       title: 'Sample Title',
       body: 'Sample Body',
       notificationLayout: NotificationLayout.Default,
@@ -22,7 +23,7 @@ void createAlarmNotificatication() async {
       criticalAlert: true,
       autoDismissible: false,
       displayOnForeground: true,
-      displayOnBackground: false,
+      displayOnBackground: true,
       category: NotificationCategory.Call,
       wakeUpScreen: true,
     ),
@@ -49,16 +50,45 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
-
   @override
   void initState() {
     super.initState();
     AwesomeNotifications().isNotificationAllowed().then(
       (isAllowed) {
         if (!isAllowed) {
-          AwesomeNotifications().requestPermissionToSendNotifications();
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Allow Notifications'),
+              content: Text('Our app would like to send you notifications'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Don\'t Allow',
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => AwesomeNotifications()
+                      .requestPermissionToSendNotifications()
+                      .then((_) => Navigator.pop(context)),
+                  child: Text(
+                    'Allow',
+                    style: TextStyle(
+                      color: Colors.teal,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         }
-      }
+      },
     );
   }
 
@@ -86,7 +116,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 Padding(
                   padding: EdgeInsets.only(right: 10.0),
                   child: IconButton(onPressed: () {
-                    Navigator.pushNamed(context, '/add_alarm');
+                    // Navigator.pushNamed(context, '/add_alarm');
+                    NavigationService().pushNamed('/add_alarm');
                   }, icon: Icon(Icons.add, size: 30),)
                 ),
                 Padding(
