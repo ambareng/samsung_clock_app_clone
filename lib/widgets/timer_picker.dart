@@ -1,15 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:samsung_clock_app_clone/providers/time_picker_provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/text_styles.dart';
 
-class TimePicker extends StatelessWidget {
-  TimePicker({Key? key}) : super(key: key);
+class TimePicker extends StatefulWidget {
+  const TimePicker({
+    Key? key,
+  }) : super(key: key);
 
-  final List<int> hourOptionsList = List<int>.generate(12, (index) {
-    return index + 1;
+  @override
+  State<TimePicker> createState() => _TimePickerState();
+}
+
+class _TimePickerState extends State<TimePicker> {
+  final List<String> hourOptionsList = List<String>.generate(12, (index) {
+    return '${index + 1}';
   });
 
   final List<String> minuteOptionsList = List<String>.generate(59, (index) {
@@ -20,6 +29,11 @@ class TimePicker extends StatelessWidget {
   });
 
   final List<String> meridiemOptionsList = ['AM', 'PM'];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +49,20 @@ class TimePicker extends StatelessWidget {
             ),
           ),
           TimePickerScrollInput(optionsList: minuteOptionsList),
-          TimePickerScrollInput(optionsList: meridiemOptionsList, isLooping: false, textStyle: timePickerSmall,),
+          TimePickerScrollInput(
+            optionsList: meridiemOptionsList, 
+            isLooping: false, 
+            textStyle: timePickerSmall
+          ),
         ],
       ),
     );
   }
 }
 
-class TimePickerScrollInput extends StatelessWidget {
+class TimePickerScrollInput extends StatefulWidget {
   final bool isLooping;
-  final List<dynamic> optionsList;
+  final List<String> optionsList;
   final TextStyle textStyle;
   const TimePickerScrollInput({
     Key? key,
@@ -54,21 +72,42 @@ class TimePickerScrollInput extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<TimePickerScrollInput> createState() => _TimePickerScrollInputState();
+}
+
+class _TimePickerScrollInputState extends State<TimePickerScrollInput> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TimePickerProvider>().setHourSelected(value: '1');
+    context.read<TimePickerProvider>().setMinuteSelected(value: '00');
+    context.read<TimePickerProvider>().setMeridianSelected(value: 'AM');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Flexible(
       flex: 1,
       child: CupertinoPicker(
         diameterRatio: 5.0,
         selectionOverlay: Container(),
-        looping: isLooping,
+        looping: widget.isLooping,
         itemExtent: 96, 
-        onSelectedItemChanged: (index) {}, 
-        children: optionsList.map((option) {
+        onSelectedItemChanged: (value) {
+          if (widget.optionsList.length == 12) {
+            context.read<TimePickerProvider>().setHourSelected(value: widget.optionsList[value]);
+          } else if (widget.optionsList.length == 59) {
+            context.read<TimePickerProvider>().setMinuteSelected(value: widget.optionsList[value]);
+          } else if (widget.optionsList.length == 2) {
+            context.read<TimePickerProvider>().setMeridianSelected(value: widget.optionsList[value]);
+          }
+        }, 
+        children: widget.optionsList.map((option) {
           return Center(
             child: Text(
               option.toString(), 
               style: GoogleFonts.nanumGothic(
-                textStyle: textStyle,
+                textStyle: widget.textStyle,
               ),
             ),
           );

@@ -10,37 +10,37 @@ import 'package:samsung_clock_app_clone/constants/text_styles.dart';
 import 'package:samsung_clock_app_clone/db/alarms_database.dart';
 import 'package:samsung_clock_app_clone/models/alarm.dart';
 
-void createAlarmNotificatication() async {
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: 0, 
-      channelKey: 'test_channel',
-      title: 'Sample Title',
-      body: 'Sample Body',
-      notificationLayout: NotificationLayout.Default,
-      locked: true,
-      fullScreenIntent: true,
-      criticalAlert: true,
-      autoDismissible: false,
-      displayOnForeground: true,
-      displayOnBackground: true,
-      category: NotificationCategory.Call,
-      wakeUpScreen: true,
-    ),
-    actionButtons: [
-      NotificationActionButton(
-        key: 'DISMISS_ALARM', 
-        label: 'Dismiss',
-        showInCompactView: true
-      ),
-      // NotificationActionButton(
-      //   key: 'SNOOZE', 
-      //   label: 'Snooze',
-      //   showInCompactView: true,
-      // ),
-    ],
-  );
-}
+// void createAlarmNotificatication() async {
+//   await AwesomeNotifications().createNotification(
+//     content: NotificationContent(
+//       id: 0, 
+//       channelKey: 'test_channel',
+//       title: 'Sample Title',
+//       body: 'Sample Body',
+//       notificationLayout: NotificationLayout.Default,
+//       locked: true,
+//       fullScreenIntent: true,
+//       criticalAlert: true,
+//       autoDismissible: false,
+//       displayOnForeground: true,
+//       displayOnBackground: true,
+//       category: NotificationCategory.Call,
+//       wakeUpScreen: true,
+//     ),
+//     actionButtons: [
+//       NotificationActionButton(
+//         key: 'DISMISS_ALARM', 
+//         label: 'Dismiss',
+//         showInCompactView: true
+//       ),
+//       // NotificationActionButton(
+//       //   key: 'SNOOZE', 
+//       //   label: 'Snooze',
+//       //   showInCompactView: true,
+//       // ),
+//     ],
+//   );
+// }
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
@@ -123,14 +123,14 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 Padding(
                   padding: EdgeInsets.only(right: 15.0),
                   child: IconButton(onPressed: () async {
-                    const int alarmId = 0;
-                    await AndroidAlarmManager.oneShotAt(
-                      DateTime.now().add(const Duration(seconds: 7)), 
-                      alarmId,
-                      createAlarmNotificatication,
-                      alarmClock: true, 
-                      allowWhileIdle: true,
-                    );
+                    // const int alarmId = 0;
+                    // await AndroidAlarmManager.oneShotAt(
+                    //   DateTime.now().add(const Duration(seconds: 7)), 
+                    //   alarmId,
+                    //   createAlarmNotificatication,
+                    //   alarmClock: true, 
+                    //   allowWhileIdle: true,
+                    // );
                   }, icon: Icon(Icons.more_vert, size: 30),)
                 )
               ],
