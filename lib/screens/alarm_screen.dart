@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, avoid_print
 
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+// import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -175,45 +175,54 @@ class AlarmWidget extends StatelessWidget {
       future: AlarmsDatabase.instance.readAllAlarms(),
       builder: (context, AsyncSnapshot<List<Alarm?>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final List<Alarm> alarmsList = snapshot.data! as List<Alarm>;
+          late List<Alarm> alarmsList;
+          if (snapshot.data!.isNotEmpty) {
+            alarmsList = snapshot.data as List<Alarm>;
+          } else {
+            return NoAlarms();
+          }
           if (alarmsList.isNotEmpty) {
-            return Column(
-              children: alarmsList.map((alarm) {
-
-                final DateFormat timeFormatter = DateFormat('h:mm ');
-                final DateFormat meridianFormatter = DateFormat('a');
-                final DateFormat dayFormatter = DateFormat('E,MMM d');
-
-                final String formattedAlarmTime = timeFormatter.format(alarm.alarmTime);
-                final String formattedAlarmMeridian = meridianFormatter.format(alarm.alarmTime);
-                final String formattedAlarmDay = dayFormatter.format(alarm.alarmTime);
-
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
-                    child: Row(
-                      children: [
-                        Text(formattedAlarmTime, style: GoogleFonts.nanumGothic(
-                          textStyle: alarmTimeDisabled
-                        ),),
-                        Container(
-                          margin: EdgeInsets.only(top: 15.0),
-                          child: Text(formattedAlarmMeridian, style: GoogleFonts.nanumGothic(
-                            textStyle: alarmMeridianDisabled
-                          ),),
+            return Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: alarmsList.map((alarm) {
+              
+                    final DateFormat timeFormatter = DateFormat('h:mm ');
+                    final DateFormat meridianFormatter = DateFormat('a');
+                    final DateFormat dayFormatter = DateFormat('E,MMM d');
+              
+                    final String formattedAlarmTime = timeFormatter.format(alarm.alarmTime);
+                    final String formattedAlarmMeridian = meridianFormatter.format(alarm.alarmTime);
+                    final String formattedAlarmDay = dayFormatter.format(alarm.alarmTime);
+              
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
+                        child: Row(
+                          children: [
+                            Text(formattedAlarmTime, style: GoogleFonts.nanumGothic(
+                              textStyle: alarmTimeDisabled
+                            ),),
+                            Container(
+                              margin: EdgeInsets.only(top: 15.0),
+                              child: Text(formattedAlarmMeridian, style: GoogleFonts.nanumGothic(
+                                textStyle: alarmMeridianDisabled
+                              ),),
+                            ),
+                            Spacer(),
+                            Text(formattedAlarmDay, style: GoogleFonts.nanumGothic(
+                              textStyle: alarmDateDisabled
+                            ),),
+                            AlarmSwitch(isOn: alarm.isEnabled, alarm: alarm,),
+                          ],
                         ),
-                        Spacer(),
-                        Text(formattedAlarmDay, style: GoogleFonts.nanumGothic(
-                          textStyle: alarmDateDisabled
-                        ),),
-                        AlarmSwitch(isOn: alarm.isEnabled, alarm: alarm,),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList()
+                      ),
+                    );
+                  }).toList()
+                ),
+              ),
             );
           } else {
             return NoAlarms();

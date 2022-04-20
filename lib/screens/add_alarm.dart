@@ -1,4 +1,4 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+// import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -162,15 +162,9 @@ class SettingBottomNavBarItem extends StatelessWidget {
               minute,
             );
 
-            // DateTime alarmTime = now.add(const Duration(minutes: 2));
-
             Alarm alarm = Alarm(isEnabled: true, alarmTime: alarmTime);
 
             AlarmsDatabase.instance.create(alarm);
-
-            print('================================');
-            print(alarmTime);
-            print('================================');
 
             createAlarmNotificatication(alarmTime);
 
