@@ -5,10 +5,11 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:samsung_clock_app_clone/constants/text_styles.dart';
 import 'package:samsung_clock_app_clone/db/alarms_database.dart';
 import 'package:samsung_clock_app_clone/models/alarm.dart';
+import 'package:samsung_clock_app_clone/widgets/add_settings_icons.dart';
+import 'package:samsung_clock_app_clone/widgets/bottom_nav_bar.dart';
 
 // void createAlarmNotificatication() async {
 //   await AwesomeNotifications().createNotification(
@@ -110,56 +111,12 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 10.0),
-                  child: IconButton(onPressed: () {
-                    // Navigator.pushNamed(context, '/add_alarm');
-                    NavigationService().pushNamed('/add_alarm');
-                  }, icon: Icon(Icons.add, size: 30),)
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 15.0),
-                  child: IconButton(onPressed: () async {
-                    // const int alarmId = 0;
-                    // await AndroidAlarmManager.oneShotAt(
-                    //   DateTime.now().add(const Duration(seconds: 7)), 
-                    //   alarmId,
-                    //   createAlarmNotificatication,
-                    //   alarmClock: true, 
-                    //   allowWhileIdle: true,
-                    // );
-                  }, icon: Icon(Icons.more_vert, size: 30),)
-                )
-              ],
-            ),
+            AddSettingsIcons(),
             AlarmWidget()
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        color: Colors.transparent,
-        child: SizedBox(
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Spacer(),
-              BottomNavBarItem(itemText: 'Alarm', isSelected: true,),
-              Spacer(),
-              BottomNavBarItem(itemText: 'World clock'),
-              Spacer(),
-              BottomNavBarItem(itemText: 'Stopwatch'),
-              Spacer(),
-              BottomNavBarItem(itemText: 'Timer'),
-              Spacer(),
-            ],
-          ),
-        ),
-      )
+      bottomNavigationBar: BottomNavBar()
     );
   }
 }
@@ -282,42 +239,6 @@ class NoAlarms extends StatelessWidget {
           textStyle: subHeader_1,
         ),
       ),
-    );
-  }
-}
-
-class BottomNavBarItem extends StatelessWidget {
-  final String itemText;
-  final bool isSelected;
-  const BottomNavBarItem({
-    Key? key,
-    required this.itemText,
-    this.isSelected = false
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 5),
-      margin: const EdgeInsets.only(bottom: 15),
-      decoration: isSelected ? _underlined() : null,
-      child: Text(
-        itemText,
-        style: GoogleFonts.nanumGothic(
-          textStyle: isSelected ? selectedBottomNavBarText_1 : bottomNavBarText_1,
-        ),
-      ),
-    );
-  }
-
-  BoxDecoration _underlined() {
-    return const BoxDecoration(
-      border: Border(
-        bottom: BorderSide(
-          color: Colors.black,
-          width: 2.0,
-        )
-      )
     );
   }
 }

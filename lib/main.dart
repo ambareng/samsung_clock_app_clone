@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:samsung_clock_app_clone/providers/time_picker_provider.dart';
 import 'package:samsung_clock_app_clone/screens/add_alarm.dart';
 import 'package:samsung_clock_app_clone/screens/alarm_screen.dart';
+import 'package:samsung_clock_app_clone/screens/world_clock_screen.dart';
 import 'screens/dismiss_alarm.dart';
 
 Future<void> main() async {
@@ -87,6 +88,8 @@ class _MainState extends State<Main> {
             return MaterialPageRoute(builder: (context) => const AddAlarm());
           case '/alarm/dismiss':
             return MaterialPageRoute(builder: (context) => const DismissAlarm());
+          case '/world_clock':
+            return MaterialPageRoute(builder: (context) => const WorldClockScreen());
           default:
             return MaterialPageRoute(builder: (context) => const AlarmScreen());
         }
