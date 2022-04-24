@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:samsung_clock_app_clone/providers/stopwatch_provider.dart';
 import 'package:samsung_clock_app_clone/providers/time_picker_provider.dart';
 import 'package:samsung_clock_app_clone/screens/add_alarm.dart';
 import 'package:samsung_clock_app_clone/screens/alarm_screen.dart';
+import 'package:samsung_clock_app_clone/screens/stopwatch_screen.dart';
 import 'package:samsung_clock_app_clone/screens/world_clock_screen.dart';
 import 'screens/dismiss_alarm.dart';
 
@@ -55,6 +57,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TimePickerProvider()),
+        ChangeNotifierProvider(create: (_) => StopwatchProvider())
       ],
       child: const Main(),
     )
@@ -90,6 +93,8 @@ class _MainState extends State<Main> {
             return MaterialPageRoute(builder: (context) => const DismissAlarm());
           case '/world_clock':
             return MaterialPageRoute(builder: (context) => const WorldClockScreen());
+          case '/stopwatch':
+            return MaterialPageRoute(builder: (context) => const Stopwatch());
           default:
             return MaterialPageRoute(builder: (context) => const AlarmScreen());
         }
