@@ -72,3 +72,8 @@ const TextStyle alarmDateDisabled = TextStyle(
 const TextStyle timer = TextStyle(
   fontSize: xxLarge
 );
+
+const TextStyle lapTimer = TextStyle(
+  fontSize: 25.0,
+  color: Colors.grey
+);
