@@ -11,6 +11,7 @@ import 'package:samsung_clock_app_clone/providers/time_picker_provider.dart';
 import 'package:samsung_clock_app_clone/screens/add_alarm.dart';
 import 'package:samsung_clock_app_clone/screens/alarm_screen.dart';
 import 'package:samsung_clock_app_clone/screens/stopwatch_screen.dart';
+import 'package:samsung_clock_app_clone/screens/timer_screen.dart';
 import 'package:samsung_clock_app_clone/screens/world_clock_screen.dart';
 import 'screens/dismiss_alarm.dart';
 
@@ -97,6 +98,8 @@ class _MainState extends State<Main> {
             return MaterialPageRoute(builder: (context) => const WorldClockScreen());
           case '/stopwatch':
             return MaterialPageRoute(builder: (context) => const Stopwatch());
+          case '/timer':
+            return MaterialPageRoute(builder: (context) => const TimerScreen());
           default:
             return MaterialPageRoute(builder: (context) => const AlarmScreen());
         }

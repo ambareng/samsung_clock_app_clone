@@ -25,7 +25,7 @@ class BottomNavBar extends StatelessWidget {
             Spacer(),
             BottomNavBarItem(itemText: 'Stopwatch', namedRoute: '/stopwatch'),
             Spacer(),
-            BottomNavBarItem(itemText: 'Timer', namedRoute: '/alarm'),
+            BottomNavBarItem(itemText: 'Timer', namedRoute: '/timer'),
             Spacer(),
           ],
         ),
